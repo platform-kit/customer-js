@@ -4,7 +4,7 @@ function validateEmail(email) {
 }
 
 // detect which services on page
-var detectedServices;
+var detectedServices = [];
 if (gist !== undefined) {
     detectedServices.push('gist');
 }
@@ -62,6 +62,13 @@ function identify(identifier, data) {
             mixpanel.identify(identifier);
         }
     }
+
+    var result = {};
+    var input = {identifier: data}
+    result.input = input;
+    result.services = detectedServices;
+
+    return result;
 }
 
 
