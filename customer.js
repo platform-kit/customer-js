@@ -1,4 +1,4 @@
-function init(options) {
+function initCrm(options) {
     if (typeof options == 'object') {
         if (options.Gist.hasOwnProperty('appId')) {
             if (options.hasOwnProperty('gist')) {
@@ -129,3 +129,9 @@ function sendEvent(eventName, eventObject) {
         mixpanel.track(eventName, eventObject);
     }
 }
+
+const customerJs = {};
+customerJs.init = initCrm();
+customerJs.sendEvent = sendEvent();
+customerJs.validateEmail = validateEmail();
+customerJs.identify = identify();
