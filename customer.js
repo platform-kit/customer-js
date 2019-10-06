@@ -1,7 +1,7 @@
 function initCrm(options) {
     if (typeof options == 'object') {
-        if (options.Gist.hasOwnProperty('appId')) {
-            if (options.hasOwnProperty('gist')) {
+        if (options.hasOwnProperty('gist')) {
+            if(options.gist.hasOwnProperty('appId')) {
                 /* Gist */
                 (function (d, h, w) {
                     var gist = w.gist = w.gist || []
@@ -21,6 +21,7 @@ function initCrm(options) {
                     s = d.createElement('script'), s.src = 'https://widget.getgist.com', s.async = !0, e = d.getElementsByTagName(h)[0], e.appendChild(s), s.addEventListener('load', function (e) {
                     }, !1), gist.setAppId(options.gist.appId), gist.trackPageView()
                 })(document, 'head', window)
+                console.log("Initialized Gist");
             }
         }
     }
@@ -37,19 +38,18 @@ function validateEmail(email) {
 
 // detect which services on page
 var detectedServices = [];
-if (gist !== undefined) {
+if (typeof gist !== 'undefined') {
     detectedServices.push('gist');
 }
-if (window.intercomSettings !== undefined) {
+if (typeof window.intercomSettings !== 'undefined') {
     detectedServices.push('intercom');
 }
-if (drift !== undefined) {
+if (typeof drift !== 'undefined') {
     detectedServices.push('drift');
 }
-if (mixpanel !== undefined) {
+if (typeof mixpanel !== 'undefined') {
     detectedServices.push('mixpanel');
 }
-
 
 /**
  * Identify the user on registered services
@@ -129,9 +129,3 @@ function sendEvent(eventName, eventObject) {
         mixpanel.track(eventName, eventObject);
     }
 }
-
-const customerJs = {};
-customerJs.init = initCrm();
-customerJs.sendEvent = sendEvent();
-customerJs.validateEmail = validateEmail();
-customerJs.identify = identify();
