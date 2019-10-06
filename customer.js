@@ -71,8 +71,6 @@ function identify(identifier, data) {
     return result;
 }
 
-
-
 /**
  * Send custom event to registered services.
  * @param {string} eventName - the name of the event
