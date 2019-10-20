@@ -138,6 +138,10 @@ function sendEvent(eventName, eventObject) {
    
     // Google Analytics
     if (detectedServices.includes('googleAnalytics')) {
-        ga('send', 'event', 'Custom', eventName);
+        ga('send', {
+                hitType: 'event',
+                eventCategory: 'PlatformKit',
+                eventAction: eventName
+            });
     }
 }
