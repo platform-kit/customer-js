@@ -1,7 +1,7 @@
 function initCrm(options) {
     if (typeof options == 'object') {
         if (options.hasOwnProperty('gist')) {
-            if(options.gist.hasOwnProperty('appId')) {
+            if (options.gist.hasOwnProperty('appId')) {
                 /* Gist */
                 (function (d, h, w) {
                     var gist = w.gist = w.gist || []
@@ -18,14 +18,12 @@ function initCrm(options) {
                         var c = gist.methods[i]
                         gist[c] = gist.factory(c)
                     }
-                    s = d.createElement('script'), s.src = 'https://widget.getgist.com', s.async = !0, e = d.getElementsByTagName(h)[0], e.appendChild(s), s.addEventListener('load', function (e) {
-                    }, !1), gist.setAppId(options.gist.appId), gist.trackPageView()
+                    s = d.createElement('script'), s.src = 'https://widget.getgist.com', s.async = !0, e = d.getElementsByTagName(h)[0], e.appendChild(s), s.addEventListener('load', function (e) {}, !1), gist.setAppId(options.gist.appId), gist.trackPageView()
                 })(document, 'head', window)
                 console.log("Initialized Gist");
             }
         }
-    }
-    else {
+    } else {
         return null;
     }
 }
@@ -53,11 +51,14 @@ if (typeof mixpanel !== 'undefined') {
 if (typeof ga == 'function') {
     detectedServices.push('googleAnalytics');
 }
+if (typeof heap == 'object') {
+    detectedServices.push('heap');
+}
 
 /**
  * Identify the user on registered services
  * @param {string} identifier - Identifier assumed to always be emailId for now
- * @param {object} [data]
+ * @param {object} data
  */
 function identify(identifier, data) {
 
@@ -102,8 +103,17 @@ function identify(identifier, data) {
         ga('set', 'userId', identifier);
     }
 
+    if (detectedServices.includes('heap')) {
+        heap.identify(identifier);
+        if (data) {
+            heap.addUserProperties(data);
+        }
+    }
+
     var result = {};
-    var input = {identifier: data};
+    var input = {
+        identifier: data
+    };
     result.input = input;
     result.services = detectedServices;
 
@@ -135,13 +145,18 @@ function sendEvent(eventName, eventObject) {
     if (detectedServices.includes('mixpanel')) {
         mixpanel.track(eventName, eventObject);
     }
-   
+
     // Google Analytics
     if (detectedServices.includes('googleAnalytics')) {
         ga('send', {
-                hitType: 'event',
-                eventCategory: 'PlatformKit',
-                eventAction: eventName
-            });
+            hitType: 'event',
+            eventCategory: 'PlatformKit',
+            eventAction: eventName
+        });
+    }
+
+    // Heap
+    if (detectedServices.includes('heap')) {
+        heap.track(eventName, eventObject);
     }
 }
