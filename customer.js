@@ -50,6 +50,9 @@ if (typeof drift !== 'undefined') {
 if (typeof mixpanel !== 'undefined') {
     detectedServices.push('mixpanel');
 }
+if (typeof ga == 'function') {
+    detectedServices.push('googleAnalytics');
+}
 
 /**
  * Identify the user on registered services
@@ -95,8 +98,12 @@ function identify(identifier, data) {
         }
     }
 
+    if (detectedServices.includes('googleAnalytics')) {
+        ga('set', 'userId', identifier);
+    }
+
     var result = {};
-    var input = {identifier: data}
+    var input = {identifier: data};
     result.input = input;
     result.services = detectedServices;
 
@@ -127,5 +134,10 @@ function sendEvent(eventName, eventObject) {
     // Mixpanel
     if (detectedServices.includes('mixpanel')) {
         mixpanel.track(eventName, eventObject);
+    }
+   
+    // Google Analytics
+    if (detectedServices.includes('googleAnalytics')) {
+        ga('send', 'event', 'Custom', eventName);
     }
 }
