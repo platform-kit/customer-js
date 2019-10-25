@@ -5,3 +5,4 @@
 .idea/customer-js.iml
 .idea/workspace.xml
 yarn-error.log
+/node_modules/
