@@ -233,3 +233,5 @@ function sendEvent(eventName, eventObject) {
         }]);
     }
 }
+
+module.exports = {initCrm, validateEmail, identify, sendEvent};
