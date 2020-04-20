@@ -16,5 +16,5 @@
 </div>
 <img src="https://img.shields.io/npm/v/customer-js.svg" />
 <img src="https://img.shields.io/npm/dw/customer-js.svg" />
-<img src="https://img.shields.io/npm/l/customer-js.svg"/>
+<img src="https://img.shields.io/npm/l/customer-js.svg" />
 </div>
